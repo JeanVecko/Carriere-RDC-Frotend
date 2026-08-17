@@ -6,8 +6,7 @@ export default function Footer() {
           Carrières<span className="text-gold-400">RDC</span>
         </span>
         <p className="max-w-md text-sm">
-          Portée par la communauté « Les Offres d&apos;emploi RDC ». La
-          plateforme de référence pour les offres d&apos;emploi, appels
+          La plateforme de référence pour les offres d&apos;emploi, appels
           d&apos;offres et formations en République Démocratique du Congo.
         </p>
         <p className="text-xs text-white/40">
