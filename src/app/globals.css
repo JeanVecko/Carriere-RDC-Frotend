@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #14213d;
+
+  /* Identite CarrieresRDC : bleu marine + or, d'apres le logo */
+  --color-navy-950: #0b1830;
+  --color-navy-900: #0f2044;
+  --color-navy-800: #14295a;
+  --color-navy-700: #1c3a73;
+  --color-navy-600: #274b8f;
+  --color-gold-600: #c98f00;
+  --color-gold-500: #e2a900;
+  --color-gold-400: #f2bd1f;
+  --color-gold-300: #f6cf54;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-navy-950: var(--color-navy-950);
+  --color-navy-900: var(--color-navy-900);
+  --color-navy-800: var(--color-navy-800);
+  --color-navy-700: var(--color-navy-700);
+  --color-navy-600: var(--color-navy-600);
+  --color-gold-600: var(--color-gold-600);
+  --color-gold-500: var(--color-gold-500);
+  --color-gold-400: var(--color-gold-400);
+  --color-gold-300: var(--color-gold-300);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer components {
+  .form-input {
+    @apply w-full rounded-lg border border-navy-900/10 px-3.5 py-2.5 text-sm text-navy-900 placeholder:text-navy-900/40 focus:outline-none focus:ring-2 focus:ring-gold-400;
+  }
+}
