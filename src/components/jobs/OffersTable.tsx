@@ -12,76 +12,66 @@ export function StatusLegend() {
   const statuses: OfferStatus[] = ["current", "closing-soon", "expired", "unspecified"];
 
   return (
-    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-navy-900/70">
-      {statuses.map((status) => (
-        <span key={status} className="flex items-center gap-1.5">
-          <StatusFlag color={offerStatusColors[status]} />
-          {offerStatusLabels[status]}
-        </span>
-      ))}
+    <div className="flex flex-wrap items-center gap-2 text-sm">
+      {statuses.map((status) => {
+        const color = offerStatusColors[status];
+        return (
+          <span
+            key={status}
+            className="flex items-center gap-1.5 rounded-full border px-3 py-1"
+            style={{ borderColor: color, backgroundColor: `${color}1a` }}
+          >
+            <StatusFlag color={color} />
+            <span style={{ color }} className="font-medium">
+              {offerStatusLabels[status]}
+            </span>
+          </span>
+        );
+      })}
     </div>
   );
 }
 
 export default function OffersTable({ offers }: { offers: JobOffer[] }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-navy-900/10 bg-white">
-      <table className="w-full min-w-[720px] text-sm">
-        <thead>
-          <tr className="border-b border-navy-900/10 text-left text-xs font-semibold uppercase tracking-wide text-navy-900/40">
-            <th className="px-4 py-3 font-semibold">Fonction</th>
-            <th className="px-4 py-3 font-semibold">Organisme</th>
-            <th className="px-4 py-3 font-semibold">Lieu</th>
-            <th className="px-4 py-3 font-semibold">Publiée</th>
-            <th className="px-4 py-3 font-semibold">Clôture</th>
-            <th className="px-4 py-3" />
-          </tr>
-        </thead>
-        <tbody>
-          {offers.map((offer, index) => (
-            <tr
-              key={offer.id}
-              className={index % 2 === 1 ? "bg-navy-900/[0.02]" : undefined}
+    <div className="flex flex-col gap-3">
+      {offers.map((offer) => (
+        <Link
+          key={offer.id}
+          href={`/offres/${offer.id}`}
+          className="group flex flex-col gap-3 rounded-full border-2 border-navy-900/40 bg-white px-5 py-3 transition-shadow hover:shadow-md sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div className="flex min-w-0 items-center gap-3">
+            <StatusFlag color={offerStatusColors[getOfferStatus(offer)]} />
+            <div className="min-w-0">
+              <p className="truncate font-semibold text-navy-900 group-hover:underline">
+                {offer.title}
+              </p>
+              <p className="truncate text-xs text-navy-900/50">
+                {offer.company} · {offer.city} · Clôture {getOfferClosingDate(offer)}
+              </p>
+              <p className="truncate text-xs text-navy-900/30">{offer.reference}</p>
+            </div>
+          </div>
+
+          <div className="flex shrink-0 items-center gap-3 pl-8 sm:pl-0">
+            {offer.isVerified && (
+              <span
+                title="Entreprise vérifiée"
+                className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-gold-400/20 text-gold-600"
+              >
+                <VerifiedIcon />
+              </span>
+            )}
+            <span
+              role="button"
+              className="rounded-full bg-navy-900 px-4 py-1.5 text-xs font-semibold text-white transition-colors group-hover:bg-navy-800"
             >
-              <td className="px-4 py-4">
-                <Link
-                  href={`/offres/${offer.id}`}
-                  className="group flex items-start gap-3"
-                >
-                  <span className="mt-1">
-                    <StatusFlag color={offerStatusColors[getOfferStatus(offer)]} />
-                  </span>
-                  <span className="font-semibold text-navy-900 group-hover:underline">
-                    {offer.title}
-                  </span>
-                </Link>
-              </td>
-              <td className="px-4 py-4 align-top text-navy-900/70">
-                {offer.company}
-              </td>
-              <td className="px-4 py-4 align-top text-navy-900/70">
-                {offer.city}
-              </td>
-              <td className="px-4 py-4 align-top text-navy-900/70">
-                {offer.publishedDate}
-              </td>
-              <td className="px-4 py-4 align-top text-navy-900/70">
-                {getOfferClosingDate(offer)}
-              </td>
-              <td className="px-4 py-4 align-top text-right">
-                {offer.isVerified && (
-                  <span
-                    title="Entreprise vérifiée"
-                    className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-gold-400/20 text-gold-600"
-                  >
-                    <VerifiedIcon />
-                  </span>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              Postuler
+            </span>
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }

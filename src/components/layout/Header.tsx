@@ -8,7 +8,6 @@ const navLinks = [
   { href: "/", label: "Offres d'emploi" },
   { href: "/appels-offres", label: "Appels d'offres" },
   { href: "/formations", label: "Formations" },
-  { href: "/contact", label: "Contact" },
 ];
 
 const navButtonClass =
@@ -40,10 +39,10 @@ export default function Header() {
           style={{ perspective: "600px" }}
         >
           <Image
-            src="/logo.png"
+            src="/logo-black.jpeg"
             alt="CarrièresRDC"
-            width={1254}
-            height={1254}
+            width={1080}
+            height={1080}
             priority
             className="h-9 w-9 rounded-full object-contain drop-shadow-[4px_6px_6px_rgba(15,32,68,0.35)] transition-transform duration-300 ease-out [transform:perspective(600px)_rotateY(-16deg)_rotateX(8deg)] hover:[transform:perspective(600px)_rotateY(0deg)_rotateX(0deg)] sm:h-11 sm:w-11"
           />
@@ -55,6 +54,9 @@ export default function Header() {
           </Link>
           <Link href="/publier" className={navButtonClass}>
             Publier une offre
+          </Link>
+          <Link href="/contact" className={navButtonClass}>
+            Contact
           </Link>
 
           <div ref={menuRef} className="relative">

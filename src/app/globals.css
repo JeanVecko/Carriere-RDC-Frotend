@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #e0dadace;
   --foreground: #14213d;
 
   /* Identite CarrieresRDC : bleu marine + or, d'apres le logo */

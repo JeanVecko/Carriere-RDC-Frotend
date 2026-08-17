@@ -27,7 +27,7 @@ export type JobOffer = {
 const curatedOffers: JobOffer[] = [
   {
     id: "1",
-    reference: "OEM-1042",
+    reference: "Ref: 15-08-26 ONEM: 653786",
     title: "Responsable Logistique",
     company: "LogiCore Group SARL",
     sector: "Logistique & Transport",
@@ -59,7 +59,7 @@ const curatedOffers: JobOffer[] = [
   },
   {
     id: "2",
-    reference: "OEM-1041",
+    reference: "Ref: 14-08-26 ONEM: 641220",
     title: "Comptable Senior",
     company: "Mining Solutions RDC",
     sector: "Finance & Comptabilité",
@@ -90,7 +90,7 @@ const curatedOffers: JobOffer[] = [
   },
   {
     id: "3",
-    reference: "OEM-1039",
+    reference: "Ref: 12-08-26 ONEM: 598347",
     title: "Chargé de Communication",
     company: "ONG Avenir Congo",
     sector: "Communication & Marketing",
@@ -118,7 +118,7 @@ const curatedOffers: JobOffer[] = [
   },
   {
     id: "4",
-    reference: "OEM-1035",
+    reference: "Ref: 10-08-26 ONEM: 512034",
     title: "Ingénieur Réseaux",
     company: "TeleConnect RDC",
     sector: "Informatique & Télécoms",
@@ -204,6 +204,13 @@ function addDays(date: Date, days: number): Date {
   return result;
 }
 
+function formatReference(date: Date, onemNumber: number): string {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = String(date.getFullYear()).slice(-2);
+  return `Ref: ${day}-${month}-${year} ONEM: ${onemNumber}`;
+}
+
 const generatedOfferTemplates: Array<{
   title: string;
   sector: string;
@@ -256,7 +263,7 @@ function generateOffers(): JobOffer[] {
 
     return {
       id: `${index + 5}`,
-      reference: `OEM-2${String(index + 1).padStart(3, "0")}`,
+      reference: formatReference(publishedDate, 100000 + ((index * 48_271) % 900_000)),
       title: template.title,
       company,
       sector: template.sector,
