@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import OffersTable from "@/components/jobs/OffersTable";
-import type { JobOffer } from "@/lib/mock-data";
+import type { JobOffer } from "@/lib/offers";
 
 const PAGE_SIZE = 15;
 
@@ -16,6 +16,14 @@ export default function PaginatedOffersList({ offers }: { offers: JobOffer[] }) 
   function goToPage(next: number) {
     setPage(next);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  if (offers.length === 0) {
+    return (
+      <p className="rounded-xl border border-navy-900/10 bg-white px-5 py-8 text-center text-sm text-navy-900/60">
+        Aucune offre d&apos;emploi disponible pour le moment.
+      </p>
+    );
   }
 
   return (

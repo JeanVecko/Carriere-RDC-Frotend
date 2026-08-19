@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { contractTypes, sectors } from "@/lib/mock-data";
+import { contractTypes, sectors } from "@/lib/offers";
 
 export default function FiltersPanel() {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,10 +1,8 @@
 import { notFound } from "next/navigation";
 import ApplicationForm from "@/components/jobs/ApplicationForm";
-import { mockJobOffers } from "@/lib/mock-data";
-
-export function generateStaticParams() {
-  return mockJobOffers.map((offer) => ({ id: offer.id }));
-}
+import ApplyCta from "@/components/jobs/ApplyCta";
+import { fetchJobOffer } from "@/lib/api";
+import { getOfferClosingDate, getPublishedDate, toDisplayOffer } from "@/lib/offers";
 
 export default async function JobOfferPage({
   params,
@@ -12,11 +10,13 @@ export default async function JobOfferPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const offer = mockJobOffers.find((item) => item.id === id);
+  const apiOffer = await fetchJobOffer(id);
 
-  if (!offer) {
+  if (!apiOffer) {
     notFound();
   }
+
+  const offer = toDisplayOffer(apiOffer);
 
   return (
     <div className="flex flex-1 flex-col bg-zinc-50">
@@ -100,23 +100,18 @@ export default async function JobOfferPage({
                 <div>
                   <dt className="text-navy-900/50">Date limite</dt>
                   <dd className="mt-0.5 font-medium text-navy-900">
-                    {offer.deadline}
+                    {getOfferClosingDate(offer.deadlineIso)}
                   </dd>
                 </div>
                 <div>
                   <dt className="text-navy-900/50">Publiée</dt>
                   <dd className="mt-0.5 font-medium text-navy-900">
-                    {offer.publishedAt}
+                    {getPublishedDate(offer.publishedAtIso)}
                   </dd>
                 </div>
               </dl>
 
-              <a
-                href="#candidature"
-                className="mt-6 block w-full rounded-lg bg-gold-500 px-6 py-3 text-center text-sm font-semibold text-navy-950 transition-colors hover:bg-gold-400"
-              >
-                Postuler maintenant
-              </a>
+              <ApplyCta offerId={offer.id} />
             </div>
           </aside>
         </div>

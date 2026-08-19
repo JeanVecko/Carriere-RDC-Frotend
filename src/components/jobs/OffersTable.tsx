@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ApplyBadge from "@/components/jobs/ApplyBadge";
 import {
   getOfferClosingDate,
   getOfferStatus,
@@ -6,7 +7,7 @@ import {
   offerStatusLabels,
   type JobOffer,
   type OfferStatus,
-} from "@/lib/mock-data";
+} from "@/lib/offers";
 
 export function StatusLegend() {
   const statuses: OfferStatus[] = ["current", "closing-soon", "expired", "unspecified"];
@@ -42,15 +43,17 @@ export default function OffersTable({ offers }: { offers: JobOffer[] }) {
           className="group flex flex-col gap-3 rounded-full border-2 border-navy-900/40 bg-white px-5 py-3 transition-shadow hover:shadow-md sm:flex-row sm:items-center sm:justify-between"
         >
           <div className="flex min-w-0 items-center gap-3">
-            <StatusFlag color={offerStatusColors[getOfferStatus(offer)]} />
+            <StatusFlag color={offerStatusColors[getOfferStatus(offer.deadlineIso)]} />
             <div className="min-w-0">
               <p className="truncate font-semibold text-navy-900 group-hover:underline">
                 {offer.title}
               </p>
               <p className="truncate text-xs text-navy-900/50">
-                {offer.company} · {offer.city} · Clôture {getOfferClosingDate(offer)}
+                {offer.company} · {offer.city} · Clôture {getOfferClosingDate(offer.deadlineIso)}
               </p>
-              <p className="truncate text-xs text-navy-900/30">{offer.reference}</p>
+              {offer.reference && (
+                <p className="truncate text-xs text-navy-900/30">{offer.reference}</p>
+              )}
             </div>
           </div>
 
@@ -63,12 +66,7 @@ export default function OffersTable({ offers }: { offers: JobOffer[] }) {
                 <VerifiedIcon />
               </span>
             )}
-            <span
-              role="button"
-              className="rounded-full bg-navy-900 px-4 py-1.5 text-xs font-semibold text-white transition-colors group-hover:bg-navy-800"
-            >
-              Postuler
-            </span>
+            <ApplyBadge offerId={offer.id} />
           </div>
         </Link>
       ))}

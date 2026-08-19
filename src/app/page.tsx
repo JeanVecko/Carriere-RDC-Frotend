@@ -1,11 +1,24 @@
+import CompanyHomeRedirect from "@/components/jobs/CompanyHomeRedirect";
 import FiltersPanel from "@/components/jobs/FiltersPanel";
 import { StatusLegend } from "@/components/jobs/OffersTable";
 import PaginatedOffersList from "@/components/jobs/PaginatedOffersList";
-import { cities, mockJobOffers } from "@/lib/mock-data";
+import { fetchJobOffers } from "@/lib/api";
+import { cities, toDisplayOffer, type JobOffer } from "@/lib/offers";
 
-export default function Home() {
+export default async function Home() {
+  let offers: JobOffer[];
+  let loadError = false;
+
+  try {
+    offers = (await fetchJobOffers()).map(toDisplayOffer);
+  } catch {
+    offers = [];
+    loadError = true;
+  }
+
   return (
     <div className="flex flex-1 flex-col bg-zinc-50">
+      <CompanyHomeRedirect />
       <section className="mx-4 mt-4 rounded-[2.5rem] bg-navy-900 pb-10 sm:mx-6 sm:mt-6 sm:pb-14">
         <div className="mx-auto w-full max-w-6xl px-4 pt-8 sm:px-6">
           <h1 className="max-w-2xl text-2xl font-bold leading-tight text-white sm:text-3xl">
@@ -51,7 +64,14 @@ export default function Home() {
           </div>
         </div>
 
-        <PaginatedOffersList offers={mockJobOffers} />
+        {loadError ? (
+          <p className="rounded-xl border border-red-200 bg-red-50 px-5 py-8 text-center text-sm text-red-700">
+            Impossible de contacter le serveur pour le moment. Réessayez dans
+            quelques instants.
+          </p>
+        ) : (
+          <PaginatedOffersList offers={offers} />
+        )}
       </section>
     </div>
   );
