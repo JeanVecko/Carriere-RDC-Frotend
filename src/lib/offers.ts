@@ -19,6 +19,7 @@ export type JobOffer = {
   contractType: string;
   isVerified: boolean;
   description: string;
+  documentUrl: string | null;
   missions: string[];
   ats: AtsCriteria;
   publishedAtIso: string | null;
@@ -36,6 +37,7 @@ export function toDisplayOffer(offer: ApiJobOffer): JobOffer {
     contractType: offer.contractType,
     isVerified: offer.organization.isVerified,
     description: offer.description,
+    documentUrl: offer.documentUrl,
     missions: offer.missions,
     ats: {
       minEducationLevel: offer.atsCriteria.minEducationLevel,

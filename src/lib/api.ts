@@ -28,6 +28,7 @@ export type ApiJobOffer = {
   city: string;
   contractType: string;
   description: string;
+  documentUrl: string | null;
   missions: string[];
   atsCriteria: ApiAtsCriteria;
   preScreeningQuestions: string[];

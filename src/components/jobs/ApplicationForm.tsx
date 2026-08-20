@@ -136,8 +136,8 @@ export default function ApplicationForm({ offer }: { offer: JobOffer }) {
       <h3 className="text-lg font-semibold text-navy-900">Postuler à cette offre</h3>
       <p className="mt-1 text-sm text-navy-900/60">
         Vous postulez en tant que <strong>{user.name}</strong> ({user.email}). Ce
-        formulaire structuré permet le tri automatique (ATS) de votre candidature
-        selon les critères du poste.
+        formulaire structuré nous permet d&apos;évaluer votre candidature selon
+        les critères du poste.
       </p>
 
       {error && (

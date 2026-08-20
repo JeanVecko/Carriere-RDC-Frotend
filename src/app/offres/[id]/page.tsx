@@ -4,6 +4,8 @@ import ApplyCta from "@/components/jobs/ApplyCta";
 import { fetchJobOffer } from "@/lib/api";
 import { getOfferClosingDate, getPublishedDate, toDisplayOffer } from "@/lib/offers";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+
 export default async function JobOfferPage({
   params,
 }: {
@@ -17,6 +19,13 @@ export default async function JobOfferPage({
   }
 
   const offer = toDisplayOffer(apiOffer);
+
+  const hasRequirements =
+    offer.ats.requiredLanguages.length > 0 ||
+    offer.ats.keySkills.length > 0 ||
+    offer.ats.niceToHave.length > 0 ||
+    offer.ats.minExperienceYears > 0 ||
+    offer.ats.minEducationLevel !== "Sans diplôme";
 
   return (
     <div className="flex flex-1 flex-col bg-zinc-50">
@@ -45,43 +54,74 @@ export default async function JobOfferPage({
       <section className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6">
         <div className="flex flex-col gap-8 lg:flex-row">
           <div className="flex-1 space-y-8">
+            {offer.documentUrl && (
+              <div className="rounded-xl border border-gold-400/40 bg-gold-400/10 p-6 sm:p-8">
+                <h2 className="text-base font-semibold text-navy-900">
+                  Document de l&apos;offre
+                </h2>
+                <p className="mt-2 text-sm text-navy-900/70">
+                  L&apos;entreprise a fourni le détail complet de cette offre dans un document PDF.
+                </p>
+                <a
+                  href={`${API_URL}${offer.documentUrl}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-block rounded-full bg-navy-900 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-navy-800"
+                >
+                  Voir le document PDF de l&apos;offre
+                </a>
+              </div>
+            )}
+
             <Block title="Description du poste">
               <p className="text-sm leading-relaxed text-navy-900/80">
                 {offer.description}
               </p>
             </Block>
 
-            <Block title="Missions principales">
-              <ul className="list-disc space-y-2 pl-5 text-sm text-navy-900/80">
-                {offer.missions.map((mission) => (
-                  <li key={mission}>{mission}</li>
-                ))}
-              </ul>
-            </Block>
+            {offer.missions.length > 0 && (
+              <Block title="Missions principales">
+                <ul className="list-disc space-y-2 pl-5 text-sm text-navy-900/80">
+                  {offer.missions.map((mission) => (
+                    <li key={mission}>{mission}</li>
+                  ))}
+                </ul>
+              </Block>
+            )}
 
-            <Block title="Critères de sélection (ATS)">
-              <div className="space-y-4">
-                <Criteria label="Niveau d'études minimum" value={offer.ats.minEducationLevel} />
-                <Criteria
-                  label="Expérience minimum"
-                  value={`${offer.ats.minExperienceYears} an(s)`}
-                />
-                <Criteria
-                  label="Langues requises"
-                  value={offer.ats.requiredLanguages.join(", ")}
-                />
-                <Criteria
-                  label="Compétences clés"
-                  value={offer.ats.keySkills.join(", ")}
-                />
-                {offer.ats.niceToHave.length > 0 && (
-                  <Criteria
-                    label="Atouts appréciés (non éliminatoires)"
-                    value={offer.ats.niceToHave.join(", ")}
-                  />
-                )}
-              </div>
-            </Block>
+            {hasRequirements && (
+              <Block title="Compétences et connaissances requises">
+                <div className="space-y-4">
+                  {offer.ats.minEducationLevel !== "Sans diplôme" && (
+                    <Criteria label="Niveau d'études minimum" value={offer.ats.minEducationLevel} />
+                  )}
+                  {offer.ats.minExperienceYears > 0 && (
+                    <Criteria
+                      label="Expérience minimum"
+                      value={`${offer.ats.minExperienceYears} an(s)`}
+                    />
+                  )}
+                  {offer.ats.requiredLanguages.length > 0 && (
+                    <Criteria
+                      label="Langues requises"
+                      value={offer.ats.requiredLanguages.join(", ")}
+                    />
+                  )}
+                  {offer.ats.keySkills.length > 0 && (
+                    <Criteria
+                      label="Compétences clés"
+                      value={offer.ats.keySkills.join(", ")}
+                    />
+                  )}
+                  {offer.ats.niceToHave.length > 0 && (
+                    <Criteria
+                      label="Atouts appréciés"
+                      value={offer.ats.niceToHave.join(", ")}
+                    />
+                  )}
+                </div>
+              </Block>
+            )}
 
             <div id="candidature">
               <ApplicationForm offer={offer} />
